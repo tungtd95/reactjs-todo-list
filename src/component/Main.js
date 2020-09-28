@@ -3,7 +3,6 @@ import imageAdd from '../add.png'
 import imageRemove from '../remove.png'
 
 export default class Main extends React.Component {
-
     constructor(props) {
         super()
         this.state = {
@@ -12,6 +11,7 @@ export default class Main extends React.Component {
         this.removeItem = this.removeItem.bind(this)
         this.addItem = this.addItem.bind(this)
     }
+
     render() {
         return (
             <div>
@@ -40,11 +40,11 @@ export default class Main extends React.Component {
 }
 
 class TodoInput extends React.Component {
-
     constructor(props) {
         super()
         this.state = {
-            note: ""
+            note: "",
+            amount: ""
         }
         this.onChanged = this.onChanged.bind(this)
         this.onAddNewTodo = this.onAddNewTodo.bind(this)
@@ -53,28 +53,38 @@ class TodoInput extends React.Component {
     render() {
         return (
             <div>
-                <input type="text" placeholder="Enter todo" value={this.state.note} onChange={this.onChanged} />
+                <input name="usename" type="text" placeholder="Nhập tên" value={this.state.note} onChange={this.onChanged} />
+                <input name="amount" type="text" placeholder="Nhập số tiền" value={this.state.amount} onChange={this.onChanged} />
                 <img src={imageAdd} width="24" onClick={this.onAddNewTodo} />
             </div>
         )
     }
 
     onChanged(ip) {
-        console.log(typeof ip.target.value)
-        this.setState({
-            note: ip.target.value
-        })
+        
+        if (ip.target.name === "usename") {
+            console.log(ip.target.name)
+            this.setState({
+                note: ip.target.value
+            })
+        } else {
+            console.log(ip.target.name)
+            this.setState({
+                amount: ip.target.value
+            })
+        }
     }
 
     onAddNewTodo() {
-        if (this.state.note === "") {
+        if (this.state.note === "" || this.state.amount === "") {
             alert("Please enter something to save!")
         } else {
             this.props.onAddNewTodo({
                 note: this.state.note,
+                amount: this.state.amount,
                 createdTime: new Date().getTime()
             })
-            this.setState({ note: "" })
+            this.setState({ note: "", amount: "" })
         }
     }
 }
@@ -83,6 +93,7 @@ function TodoItem(props) {
     return (
         <div>
             {props.item.note}
+            <strong>{props.item.amount}</strong>
             <img src={imageRemove} width="20" onClick={() => props.onRemove(props.item)} />
         </div>
     )

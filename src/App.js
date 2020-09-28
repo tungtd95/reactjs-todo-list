@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
 import Main from './component/Main';
+import Header from './component/Header'
 
 function App() {
   return (
     <div>
-      <h1>Todo list</h1>
+      <Header />
       <Main />
     </div>
   );
