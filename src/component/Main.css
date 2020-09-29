@@ -1,0 +1,22 @@
+.todo-wrapper {
+    font-size: 50px;
+    display: flex;
+}
+
+.todo-wrapper input {
+    padding: 8px;
+    margin: 8px;
+}
+
+.todo-wrapper img {
+    margin: 8px;
+}
+
+.todo-item {
+    margin: 8px;
+    display: flex;
+}
+
+#amount {
+    margin: 0px 8px 0px 8px;
+}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import imageAdd from '../add.png'
 import imageRemove from '../remove.png'
+import './Main.css'
 
 export default function Main() {
     const [todoList, setTodoList] = useState([])
@@ -53,20 +54,20 @@ function TodoInput(props) {
     }
 
     return (
-        <div>
+        <div className="todo-wrapper">
             <input name="usename" type="text" placeholder="Nhập tên" value={note} onChange={onChanged} />
             <input name="amount" type="text" placeholder="Nhập số tiền" value={amount} onChange={onChanged} />
-            <img src={imageAdd} width="24" onClick={onAddNewTodo} />
+            <img src={imageAdd} width="32" height="32" onClick={onAddNewTodo} />
         </div>
     )
 }
 
 function TodoItem(props) {
     return (
-        <div>
-            {props.item.note}
-            <strong>{props.item.amount}</strong>
-            <img src={imageRemove} width="20" onClick={() => props.onRemove(props.item)} />
+        <div className="todo-item">
+            <div>{props.item.note}</div>
+            <strong id="amount">{props.item.amount}</strong>
+            <img src={imageRemove} width="16" height="16" onClick={() => props.onRemove(props.item)} />
         </div>
     )
 }
