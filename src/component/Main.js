@@ -1,92 +1,64 @@
-import React from 'react'
+import React, { useState } from 'react'
 import imageAdd from '../add.png'
 import imageRemove from '../remove.png'
 
-export default class Main extends React.Component {
-    constructor(props) {
-        super()
-        this.state = {
-            todoList: []
-        }
-        this.removeItem = this.removeItem.bind(this)
-        this.addItem = this.addItem.bind(this)
+export default function Main() {
+    const [todoList, setTodoList] = useState([])
+
+    function removeItem(item) {
+        let newList = todoList.filter((i) => i.createdTime !== item.createdTime)
+        setTodoList(newList)
     }
 
-    render() {
-        return (
-            <div>
-                <TodoInput onAddNewTodo={this.addItem} />
-                {this.state.todoList.map((item) =>
-                    <TodoItem item={item} onRemove={this.removeItem} key={item.createdTime} />
-                )}
-            </div>
-        )
-    }
-
-    removeItem(item) {
-        let newList = this.state.todoList.filter((i) => i.createdTime !== item.createdTime)
-        this.setState({
-            todoList: newList
-        })
-    }
-
-    addItem(item) {
-        let newList = this.state.todoList.slice()
+    function addItem(item) {
+        let newList = todoList.slice()
         newList.push(item)
-        this.setState({
-            todoList: newList
-        })
+        setTodoList(newList)
     }
+
+    return (
+        <div>
+            <TodoInput onAddNewTodoCallback={addItem} />
+            {todoList.map((item) =>
+                <TodoItem item={item} onRemove={removeItem} key={item.createdTime} />
+            )}
+        </div>
+    )
 }
 
-class TodoInput extends React.Component {
-    constructor(props) {
-        super()
-        this.state = {
-            note: "",
-            amount: ""
-        }
-        this.onChanged = this.onChanged.bind(this)
-        this.onAddNewTodo = this.onAddNewTodo.bind(this)
-    }
+function TodoInput(props) {
+    const [note, setNote] = useState("")
+    const [amount, setAmount] = useState("")
 
-    render() {
-        return (
-            <div>
-                <input name="usename" type="text" placeholder="Nhập tên" value={this.state.note} onChange={this.onChanged} />
-                <input name="amount" type="text" placeholder="Nhập số tiền" value={this.state.amount} onChange={this.onChanged} />
-                <img src={imageAdd} width="24" onClick={this.onAddNewTodo} />
-            </div>
-        )
-    }
-
-    onChanged(ip) {
-        
-        if (ip.target.name === "usename") {
-            console.log(ip.target.name)
-            this.setState({
-                note: ip.target.value
-            })
+    function onChanged(event) {
+        if (event.target.name === "usename") {
+            setNote(event.target.value)
         } else {
-            console.log(ip.target.name)
-            this.setState({
-                amount: ip.target.value
-            })
+            setAmount(event.target.value)
         }
     }
 
-    onAddNewTodo() {
-        if (this.state.note === "" || this.state.amount === "") {
+    function onAddNewTodo() {
+        if (note === "" || amount === "") {
             alert("Please enter something to save!")
         } else {
-            this.props.onAddNewTodo({
-                note: this.state.note,
-                amount: this.state.amount,
+            props.onAddNewTodoCallback({
+                note: note,
+                amount: amount,
                 createdTime: new Date().getTime()
             })
-            this.setState({ note: "", amount: "" })
+            setNote("")
+            setAmount("")
         }
     }
+
+    return (
+        <div>
+            <input name="usename" type="text" placeholder="Nhập tên" value={note} onChange={onChanged} />
+            <input name="amount" type="text" placeholder="Nhập số tiền" value={amount} onChange={onChanged} />
+            <img src={imageAdd} width="24" onClick={onAddNewTodo} />
+        </div>
+    )
 }
 
 function TodoItem(props) {
